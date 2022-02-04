@@ -4,14 +4,20 @@ export default function TextForm(props) {
     const [text, setText] = useState('');
     // text="new Text" Wrong way to assign new value to text variable, this can only be done through setText()
 
+    const handleSeClick=()=> { 
+        let newText = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function (c) { return c.toUpperCase() });
+        setText(newText)
+        props.showAlert("Converted to SENTENCE CASE", "success");
+    }
+
     const handleUpClick = () => {
         // console.log("Uppercase button is triggered");
-        if(text.length!=0){
+        if (text.length != 0) {
             let uppText = text.toUpperCase()
             setText(uppText);
             props.showAlert("Converted to UPPERCASE", "success"); //***Note: we are calling showAlert function which is declared in App.js So to ude here, we have to use props.showAlert()            
         }
-        else{
+        else {
             window.alert("Please add text first !!!")
         }
     }
@@ -32,12 +38,25 @@ export default function TextForm(props) {
                 newtext[i] = newtext[i].charAt(0).toUpperCase() + newtext[i].slice(1);
             }
             setText(newtext.join(' '))
-            props.showAlert("Converted to TITLECASE", "success"); //Alert
+            props.showAlert("Converted to TITLE CASE", "success"); //Alert
         }
         else {
             window.alert("Please add text first !!!")
         }
     }
+
+    // const handleInvertClick = () => {
+    //     if (text.length != 0) {
+    //         let newtext = text.split('').map((c) =>c === c.toUpperCase()
+    //                     ? c.toLowerCase()
+    //                     : c.toUpperCase()).join('');
+    //         setText(newtext)
+    //         props.showAlert("Converted to INVERT CASE", "success"); //Alert
+    //     }
+    //     else {
+    //         window.alert("Please add text first !!!")
+    //     }
+    // }
     const handleClearClick = () => {
         if (text.length != 0) {
             let newText = ""
@@ -66,20 +85,22 @@ export default function TextForm(props) {
             <div className={`container text-${props.mode}`}>
                 <h3 style={{ color: (props.mode === 'light' ? 'black' : 'white') }}>Enter Your text below to analyze</h3>
                 <div className="mb-3">
-                    <textarea className="form-control" onChange={handleOnChange} style={{ background: (props.mode === 'light' ? 'white' : '#292929c9'), color: (props.mode === 'light' ? 'black' : 'white')}} value={text} id="exampleFormControlTextarea1" rows="8"></textarea>
+                    <textarea className="form-control" onChange={handleOnChange} style={{ background: (props.mode === 'light' ? 'white' : '#292929c9'), color: (props.mode === 'light' ? 'black' : 'white') }} value={text} id="exampleFormControlTextarea1" rows="8"></textarea>
                 </div>
-            <button className="btn my-1 btn-info" onClick={handleUpClick}>Convert to UPPERCASE</button>
-            <button className="btn mx-2 my-1 btn-warning" onClick={handleLowClick}>Convert to Lowercase</button>
-            <button className="btn mx-2 my-1 btn-dark" onClick={handleTitleClick}>Convert to Titlecase</button>
-            <button className="btn mx-2 my-1 btn-danger" onClick={handleClearClick}>Clear Text</button>
-            <button className="btn mx-2 my-1 btn-primary" onClick={handleDummyClick}>Dummy Text</button>
-            <button className="btn mx-2 my-1 btn-light" onClick={handleCopyClick}>Copy to clipboard</button>
+                <button className="btn mx-1 my-1 btn-info" onClick={handleSeClick}>Convert to Sentence Case</button>
+                <button className="btn mx-1 my-1 " onClick={handleUpClick} style={{ backgroundColor: '#ff6f61' }}>Convert to UPPERCASE</button>
+                <button className="btn mx-1 my-1 btn-warning" onClick={handleLowClick}>Convert to Lowercase</button>
+                <button className="btn mx-1 my-1 btn-dark" onClick={handleTitleClick} style={{ backgroundColor: '#7e849a', }}>Convert to Titlecase</button>
+                {/* <button className="btn mx-1 my-1 btn-dark" onClick={handleInvertClick}>Convert to Invertcase</button> */}
+                <button className="btn mx-1 my-1 btn-danger" onClick={handleClearClick}>Clear Text</button>
+                <button className="btn mx-1 my-1 btn-primary" onClick={handleDummyClick}>Dummy Text</button>
+                <button className="btn mx-1 my-1 btn-light" onClick={handleCopyClick} style={{ backgroundColor: '#F7CAC9' }}>Copy to clipboard</button>
             </div>
             <div className="container my-3">
                 <h3 style={{ color: (props.mode === 'light' ? 'black' : 'white') }}>Your Text Summary</h3>
                 <div className="card">
                     <ul className="list-group" >
-                        <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Words : {text.split(' ').filter((element)=>{return element.length!==0}).length}</li>
+                        <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Words : {text.split(' ').filter((element) => { return element.length !== 0 }).length}</li>
                         <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Characters (with spaces) : {text.length} </li>
                         <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Characters (without spaces) : {text.replace(/ /g, "").length} </li>
                     </ul>
@@ -87,13 +108,13 @@ export default function TextForm(props) {
             </div>
             <div className="container">
                 <h3 style={{ color: (props.mode === 'light' ? 'black' : 'white') }}>Preview of Your Text</h3>
-                <div className="card" style={{background: (props.mode === 'light' ? 'white' : '#292929c9'), color: (props.mode === 'light' ? 'black' : 'white'),width:'fit-content'}}>
+                <div className="card" style={{ background: (props.mode === 'light' ? 'white' : '#292929c9'), color: (props.mode === 'light' ? 'black' : 'white'), width: 'fit-content' }}>
                     <div className="card-body">
                         {text.length > 1 ? text : `"Preview of Your Text"`}
                     </div>
                 </div>
             </div>
-            
+
         </div>
     )
 }
