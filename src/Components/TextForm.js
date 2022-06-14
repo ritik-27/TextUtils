@@ -4,35 +4,40 @@ export default function TextForm(props) {
     const [text, setText] = useState('');
     // text="new Text" Wrong way to assign new value to text variable, this can only be done through setText()
 
-    const handleSeClick=()=> { 
-        let newText = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function (c) { return c.toUpperCase() });
-        setText(newText)
-        props.showAlert("Converted to SENTENCE CASE", "success");
+    const handleSeClick=()=> {
+        if(text.length>0){
+            let newText = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function (c) { return c.toUpperCase() });
+            setText(newText)
+            props.showAlert("Converted to SENTENCE CASE", "success");
+        }
+        else{
+            props.showAlert('Input field is Empty', 'warning')
+        }
     }
 
     const handleUpClick = () => {
         // console.log("Uppercase button is triggered");
-        if (text.length != 0) {
+        if (text.length > 0) {
             let uppText = text.toUpperCase()
             setText(uppText);
             props.showAlert("Converted to UPPERCASE", "success"); //***Note: we are calling showAlert function which is declared in App.js So to ude here, we have to use props.showAlert()            
         }
         else {
-            window.alert("Please add text first !!!")
+            props.showAlert('Input field is Empty','warning')
         }
     }
     const handleLowClick = () => {
-        if (text.length != 0) {
+        if (text.length > 0) {
             let lowText = text.toLowerCase();
             setText(lowText)
             props.showAlert("Converted to LOWERCASE", "success"); //Alert
         }
         else {
-            window.alert("Please add text first !!!")
+            props.showAlert('Input field is Empty', 'warning')
         }
     }
     const handleTitleClick = () => {
-        if (text.length != 0) {
+        if (text.length > 0) {
             let newtext = text.toLowerCase().split(' ');
             for (let i = 0; i < newtext.length; i++) {
                 newtext[i] = newtext[i].charAt(0).toUpperCase() + newtext[i].slice(1);
@@ -41,7 +46,7 @@ export default function TextForm(props) {
             props.showAlert("Converted to TITLE CASE", "success"); //Alert
         }
         else {
-            window.alert("Please add text first !!!")
+            props.showAlert('Input field is Empty', 'warning')
         }
     }
 
@@ -58,18 +63,23 @@ export default function TextForm(props) {
     //     }
     // }
     const handleClearClick = () => {
-        if (text.length != 0) {
+        if (text.length > 0) {
             let newText = ""
             setText(newText);
             props.showAlert("Text cleared successfully", "success"); //Alert
         }
         else {
-            window.alert("Text field is already EMPTY !!")
+            props.showAlert('Input field is Empty', 'warning')
         }
     }
     const handleCopyClick = () => {
-        document.querySelector('textarea').select();
-        document.execCommand('copy');
+        if(text.length>0){
+            navigator.clipboard.writeText(text);
+            props.showAlert("Text copied to Clipboard", "success"); //Alert
+        }
+        else{
+            props.showAlert('Input field is Empty', 'warning')
+        }
     }
     const handleDummyClick = () => {
         let newText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat, nisl sit amet egestas euismod, mi urna lobortis diam, eget ullamcorper sapien ipsum eu massa. Maecenas vitae porttitor magna. Curabitur ultricies dui tellus, nec hendrerit purus facilisis id. Nulla molestie dui ac eros vehicula, id dictum nisl eleifend. Sed at justo magna. Nullam dignissim lectus vel tempus pretium. Duis tincidunt ultrices neque non pharetra. Nunc aliquam mattis sem, non laoreet sem laoreet sit amet. Morbi rutrum gravida libero non ultricies.
@@ -100,7 +110,7 @@ export default function TextForm(props) {
                 <h3 style={{ color: (props.mode === 'light' ? 'black' : 'white') }}>Your Text Summary</h3>
                 <div className="card">
                     <ul className="list-group" >
-                        <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Words : {text.split(' ').filter((element) => { return element.length !== 0 }).length}</li>
+                        <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Words : {text.split(/\s+/).filter((element) => { return element.length !== 0 }).length}</li>
                         <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Characters (with spaces) : {text.length} </li>
                         <li className="list-group-item" style={{ background: (props.mode === 'light' ? 'white' : '#483d3dc9'), color: (props.mode === 'light' ? 'black' : 'white') }}>Number of Characters (without spaces) : {text.replace(/ /g, "").length} </li>
                     </ul>

@@ -1,6 +1,20 @@
 import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
 
+function homeActive(){
+    let home=document.getElementById('home')
+    let about=document.getElementById('about');
+    home.classList.add('active');
+    about.classList.remove('active')
+}
+// function aboutActive(){
+//     let home=document.getElementById('home')
+//     let about=document.getElementById('about');
+//     let className='nav-link';
+//     if(this.props.isactive){
+//         className+=' active'
+//     }
+// }
 export default function Navbar(props) {
     return (
         <div>
@@ -13,10 +27,10 @@ export default function Navbar(props) {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                                <Link id='home' className="nav-link"  aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/About">About</Link>
+                                <Link id='about' className="nav-link" to="/About">About</Link>
                             </li>
                             
                         </ul>
