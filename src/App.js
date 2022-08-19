@@ -35,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Router>
+      <Router basename='/'>
         <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode} />
         <Alert alert={alert} />
         <Routes>
