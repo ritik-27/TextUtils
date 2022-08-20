@@ -4,7 +4,7 @@ import Navbar from './Components/Navbar';
 import TextForm from './Components/TextForm';
 import React, { useState } from 'react';
 import Alert from './Components/Alert';
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -35,13 +35,13 @@ function App() {
 
   return (
     <>
-      <Router basename='/'>
+      <Router>
         <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode} />
         <Alert alert={alert} />
         <Routes>
-          <Route path="/about" element={<About mode={mode} />}>
+          <Route exact path="/about" element={<About mode={mode} />}>
           </Route>
-          <Route path="/" element={<TextForm mode={mode} showAlert={showAlert} />}>
+          <Route exact path="/" element={<TextForm mode={mode} showAlert={showAlert} />}>
           </Route>
         </Routes>
       </Router>
